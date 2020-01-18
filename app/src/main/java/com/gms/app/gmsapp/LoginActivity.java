@@ -1,7 +1,9 @@
 package com.gms.app.gmsapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +14,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +57,15 @@ public class LoginActivity extends AppCompatActivity {
                 String id = et_id.getText().toString();
                 String pw = et_pass.getText().toString();
 
+                String url = getString(R.string.host_name)+"api/loginAction.do?id="+id+"&pw="+pw;//AA315923";
+
+                // AsyncTask를 통해 HttpURLConnection 수행.
+                NetworkTask networkTask = new NetworkTask(url, null);
+                networkTask.execute();
+                //data를 json으로 변환
+                //JSONObject obj = new JSONObject(result.getContents());
+/*
+                //LoginRequest 사용
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -105,7 +113,79 @@ public class LoginActivity extends AppCompatActivity {
                 LoginRequest loginRequest = new LoginRequest(id,pw,responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
+
+ */
             }
         });
+    }
+
+
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+
+        public NetworkTask(String url, ContentValues values) {
+
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            com.gms.app.gmsapp.RequestHttpURLConnection requestHttpURLConnection = new com.gms.app.gmsapp.RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
+
+            Log.i("LoginActivity doInBackground","rseult="+result);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.i("LoginActivity onPostExecute","s="+s);
+            //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
+            //tv_result.setText(s);
+            boolean success = false;
+
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                Log.e("LoginActivity", "jsonObject ="+jsonObject.toString());
+                success = jsonObject.getBoolean("success");
+                Log.e("LoginActivity", "success ="+success);
+                if(success) {
+                    String id = jsonObject.getString("userId");
+                    String name = URLDecoder.decode(jsonObject.getString("userNm"),"UTF-8");
+
+                    //SharedPreferences 저장
+                    if(chk_login.isChecked()) {
+                        SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        //String value = id.getText().toString();
+                        editor.putString("id", id);
+                        editor.putString("name", name);
+                        editor.commit();
+                    }
+                    Toast.makeText(getApplicationContext(),"로그인이 성공하였습니다,",Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    intent.putExtra("id",id);
+                    intent.putExtra("pw", name);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(),"로그인이 실패하였습니다,",Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException eu) {
+                eu.printStackTrace();
+            }
+
+        }
     }
 }

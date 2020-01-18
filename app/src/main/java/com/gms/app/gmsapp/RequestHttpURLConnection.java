@@ -58,6 +58,8 @@ public class RequestHttpURLConnection {
             URL url = new URL(_url);
             urlConn = (HttpURLConnection) url.openConnection();
 
+
+
             // [2-1]. urlConn 설정.
             urlConn.setRequestMethod("POST"); // URL 요청에 대한 메소드 설정 : POST.
             urlConn.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
@@ -93,8 +95,10 @@ public class RequestHttpURLConnection {
 
         } catch (MalformedURLException e) { // for URL.
             e.printStackTrace();
+            Log.i("RequestHttpURLCon MalformedURLException ", "e "+e.toString());
         } catch (IOException e) { // for openConnection().
             e.printStackTrace();
+            Log.i("RequestHttpURLCon IOException ", "e "+e.toString());
         } finally {
             if (urlConn != null)
                 urlConn.disconnect();

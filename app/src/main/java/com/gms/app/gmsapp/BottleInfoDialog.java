@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+
 
 public class BottleInfoDialog {
     private Context context;
@@ -38,9 +37,13 @@ public class BottleInfoDialog {
         dlg.show();
 
         final Button okButton = (Button) dlg.findViewById(R.id.okButton);
-        final TextView et_message = (TextView) dlg.findViewById(R.id.et_message);
-        et_message.setText(str);
 
+        final TextView tv_bottleId = (TextView) dlg.findViewById(R.id.tv_bottleId);
+        final TextView tv_barCd = (TextView) dlg.findViewById(R.id.tv_barCd);
+        final TextView tv_productNm = (TextView) dlg.findViewById(R.id.tv_productNm);
+        final TextView tv_bottleCapa = (TextView) dlg.findViewById(R.id.tv_bottleCapa);
+        final TextView tv_bottleChargeDt = (TextView) dlg.findViewById(R.id.tv_bottleChargeDt);
+        final TextView tv_bottleVolumn = (TextView) dlg.findViewById(R.id.tv_bottleVolumn);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,21 +51,26 @@ public class BottleInfoDialog {
                 dlg.dismiss();
             }
         });
-/*
-        String bottleBarCd = "";
+
+
         try {
+            Gson gson = new Gson();
 
-            JSONObject jsonObject = new JSONObject(str_info);
-            bottleId = jsonObject.getString("bottleId");
-            bottleBarCd = jsonObject.getString("bottleBarCd");
-            Log.i("BottleInfoDialog bottleId==",bottleId);
-            Log.i("BottleInfoDialog bottleBarCd==", bottleBarCd);
+            BottleVO bottle = new BottleVO();
+            bottle = (BottleVO) gson.fromJson(str_info, bottle.getClass());
 
-            tv_bottleId.setText(bottleId.toString());
-            tv_bottleBarCd.setText(bottleBarCd.toString());
-        } catch (JSONException e) {
+            Log.i("BottleInfoDialog bottleId==",bottle.getBottleId());
+            Log.i("BottleInfoDialog getBottleChargeDt==", bottle.getBottleChargeDt().substring(0,10));
+            tv_barCd.setText(bottle.getBottleBarCd());
+            tv_bottleId.setText(bottle.getBottleId());
+            tv_productNm.setText(bottle.getProductNm());
+            tv_bottleCapa.setText(bottle.getBottleCapa());
+            tv_bottleChargeDt.setText(bottle.getBottleChargeDt().substring(0,10));
+            tv_bottleVolumn.setText(bottle.getBottleVolumn());
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-*/
+
     }
 }

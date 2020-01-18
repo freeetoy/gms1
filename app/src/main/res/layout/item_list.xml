@@ -6,39 +6,43 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="45dp">
 
         <TextView
             android:id="@+id/tv_bottleBarCd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
             android:text="AA315923"
-            android:textSize="18sp" />
+            android:paddingLeft="10dp"
+            android:textColor="#000000"
+            android:gravity="center_vertical"
+            android:textSize="20sp" />
         <TextView
             android:id="@+id/tv_bottleId"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:text="1"
-            />
+            android:text="1"/>
 
         <TextView
             android:id="@+id/tv_productNm"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textSize="18sp"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:gravity="center_vertical"
             android:text="리사이클뷰" />
 
         <Button
             android:id="@+id/btn_info"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_height="match_parent"
+            android:textColor="#000000"
             android:text="정보보기"
-            android:textSize="16sp" />
-
+            android:gravity="right"
+            android:textSize="18sp" />
 
     </LinearLayout>
+    <View style="@style/Divider"/>
 
 </LinearLayout>

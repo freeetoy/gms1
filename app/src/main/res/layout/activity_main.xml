@@ -22,19 +22,50 @@
         android:layout_marginBottom="140dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/btn_incar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#7484E6"
+            >
 
-        <TextView
-            android:id="@+id/main_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Main Label"
-            android:textColor="#000000"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo" />
 
+            <TextView
+                android:id="@+id/main_label"
+                android:layout_width="170dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:text="(주)대한특수가스"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/selector_button_img"
+                />
+
+            <Button
+                android:id="@+id/btn_scan"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="#E65A5B5C"
+                android:text="스캔하기"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <View style="@style/Divider"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
@@ -52,26 +83,26 @@
         android:layout_height="wrap_content"
         android:text="전체삭제"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button23"
-        app:layout_constraintStart_toEndOf="@+id/btn_scan" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_vacuum"
+        app:layout_constraintStart_toEndOf="@+id/btn_manual" />
 
     <Button
-        android:id="@+id/btn_scan"
+        android:id="@+id/btn_manual"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="스캔하기"
+        android:text="수동입력"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_deleteAll"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button23"
+        android:id="@+id/btn_hole"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="누공확인"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_deleteAll" />
+        app:layout_constraintStart_toEndOf="@+id/btn_vacuum" />
 
     <Button
         android:id="@+id/btn_rental"
@@ -95,7 +126,8 @@
         android:id="@+id/btn_etc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="기타"
+        android:text="충전기한확인"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_deleteAll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_back" />
@@ -144,5 +176,14 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_rental"
         app:layout_constraintEnd_toStartOf="@+id/btn_incar"
         app:layout_constraintStart_toEndOf="@+id/btn_come" />
+
+    <Button
+        android:id="@+id/btn_vacuum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="진공배기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_hole"
+        app:layout_constraintStart_toEndOf="@+id/btn_deleteAll" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
