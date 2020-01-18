@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class ExampleBottomSheetDialog extends BottomSheetDialogFragment {
+public class BottomSheetDialog extends BottomSheetDialogFragment {
     private BottomSheetListener mListener;
     private Context context;
     private String bottles;
 
-    public ExampleBottomSheetDialog(Context context, String bottles) {
+    public BottomSheetDialog(Context context, String bottles) {
         this.context = context;
         this.bottles = bottles;
     }
