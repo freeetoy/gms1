@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -25,16 +26,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener{
 
-    private Button btn_logout,btn_come, btn_out, btn_incar, btn_charge, btn_sales, btn_rental, btn_back, btn_etc, btn_scan, btn_deleteAll,btn_vacuum, btn_hole, btn_manual;
+    private Button btn_logout,btn_come, btn_out, btn_incar, btn_charge, btn_sales, btn_rental, btn_back, btn_chargedt, btn_scan, btn_deleteAll,btn_history, btn_etc, btn_manual;
 
     private int REQUEST_TEST = 1;
     private static ArrayList<MainData> arrayList;
+    private static ArrayList<MainData> tempArrayList;
     private static MainAdapter mainAdapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private static final String TAG = "MainActivity";
     private String shared = "file";
     private String userId = "";
+    private String previousBottles="";
     private String host="";
 
     //qr code scanner object
@@ -56,11 +59,11 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         btn_sales = (Button)findViewById(R.id.btn_sales);       // 판매
         btn_rental = (Button)findViewById(R.id.btn_rental);     //대여
         btn_back = (Button)findViewById(R.id.btn_back);         //회수
-        btn_etc = (Button)findViewById(R.id.btn_etc);           //기타(충전기한 확인)
+        btn_chargedt = (Button)findViewById(R.id.btn_chargedt);           //충전기한 확인
         btn_scan = (Button)findViewById(R.id.btn_scan);         // 스캔하기
         btn_deleteAll = (Button)findViewById(R.id.btn_deleteAll);       // 리스트 삭제
-        btn_vacuum = (Button)findViewById(R.id.btn_vacuum);       // 진공배기
-        btn_hole = (Button)findViewById(R.id.btn_hole);       // 진공배기
+        btn_history = (Button)findViewById(R.id.btn_history);       // 이전 작업 내역
+        btn_etc = (Button)findViewById(R.id.btn_etc);       // 기타
         btn_manual= (Button)findViewById(R.id.btn_manual);       // 수동등록
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv);
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
         //qrScan.initiateScan();
 
         //SharedPreferences 로그인 정보 유무 확인
-        SharedPreferences sharedPreferences = getSharedPreferences(shared,0);
+        final SharedPreferences sharedPreferences = getSharedPreferences(shared,0);
         userId = sharedPreferences.getString("id", "");
 
         btn_scan.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
                 //1/9 임시 테스트
                 if(tempInd==8) tempInd = 0;
                 // = new String[]{"AA315923""AA315784","AA316260"};
-                String[] barcodes = new String[]{"AA315785", "AA315915", "AA316273","AA316197","AA316268","AA316256","AA315784","AA316260"};
+                String[] barcodes = new String[]{"AA001849", "AA315915", "AA316273","AA316197","AA316268","AA316256","AA315784","AA316260"};
                 String testBarCd = barcodes[tempInd++];
 
                 String url = host+"api/bottleDetail.do?bottleBarCd="+testBarCd;//AA315923";
@@ -268,13 +271,13 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             }
         });
 
-        btn_etc.setOnClickListener(new View.OnClickListener() {
+        btn_chargedt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(arrayList.size() <= 0){
                     Toast.makeText(MainActivity.this, "용기를 선택하세요", Toast.LENGTH_LONG).show();
                 }else {
-                    ChargeDialog customDialog = new ChargeDialog(MainActivity.this, btn_etc.getText().toString());
+                    ChargeDialog customDialog = new ChargeDialog(MainActivity.this, btn_chargedt.getText().toString());
 
                     String tempStr = "";
                     for (int i = 0; i < arrayList.size(); i++) {
@@ -289,9 +292,10 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             }
         });
 
-        btn_vacuum.setOnClickListener(new View.OnClickListener() {
+        btn_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if(arrayList.size() <= 0){
                     Toast.makeText(MainActivity.this, "용기를 선택하세요", Toast.LENGTH_LONG).show();
                 }else {
@@ -307,11 +311,36 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
                     // 커스텀 다이얼로그의 결과를 출력할 TextView를 매개변수로 같이 넘겨준다.
                     customDialog.callFunction(tempStr, userId);
                 }
+                 */
+                previousBottles = sharedPreferences.getString("previousBottles", "");
+                Log.d("previousBottles", previousBottles);
+                if(previousBottles!=null && previousBottles.length() > 0) {
+                    String[] aCode = previousBottles.split(",");
+                    Button btn_info = findViewById(R.id.btn_info);
+                    for (int i = 0; i < aCode.length; i++) {
+                        Log.d("previousBottles", "aCode " + aCode[i]);
+
+                        // 저장된 용기 정보 불러오기
+                        Gson gson = new Gson();
+                        String sharedValue = sharedPreferences.getString(aCode[i], "");
+                        Log.d("previousBottles", "value " + sharedValue);
+
+                        BottleVO bottle = new BottleVO();
+                        bottle = (BottleVO) gson.fromJson(sharedValue, bottle.getClass());
+
+                        MainData mainData = new MainData(bottle.getBottleId(), bottle.getBottleBarCd(), bottle.getProductNm(), btn_info);
+                        arrayList.add(mainData);
+                    }
+
+                    mainAdapter.notifyDataSetChanged();
+                }else{
+                    Toast.makeText(MainActivity.this, "이전 작업 내역이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
-
-        btn_hole.setOnClickListener(new View.OnClickListener() {
+        btn_etc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(arrayList.size() <= 0){
@@ -324,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
                     }
                     Toast.makeText(MainActivity.this, tempStr, Toast.LENGTH_SHORT).show();
 
+                    // 하단 창 띄우기
                     BottomSheetDialog bottomSheet = new BottomSheetDialog(MainActivity.this,tempStr);
                     bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
                     /*/
@@ -435,14 +465,14 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
             com.gms.app.gmsapp.RequestHttpURLConnection requestHttpURLConnection = new com.gms.app.gmsapp.RequestHttpURLConnection();
             result = requestHttpURLConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
 
-            Log.i("MainActivity doInBackground","rseult="+result);
+            Log.d("MainActivity doInBackground","rseult="+result);
             return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.i("Mainctivity onPostExecute","s="+s);
+            Log.d("Mainctivity onPostExecute","s="+s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
             //tv_result.setText(s);
             String bottleBarCd="";
@@ -454,12 +484,12 @@ public class MainActivity extends AppCompatActivity implements BottomSheetDialog
                 bottleId = jsonObject.getString("bottleId");
                 bottleBarCd = jsonObject.getString("bottleBarCd");
                 productNm = jsonObject.getString("productNm");
-                Log.i("Mainctivity onPostExecute","tv_bottleBarCd="+bottleBarCd+ "productNm ="+productNm);
+                Log.d("Mainctivity onPostExecute","tv_bottleBarCd="+bottleBarCd+ "productNm ="+productNm);
 
                 SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                editor.putString(bottleBarCd,s);
+                editor.putString(bottleId,s);
                 editor.commit();
 
             } catch (JSONException e) {

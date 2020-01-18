@@ -7,21 +7,21 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btn_hole"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="button 1" />
+        android:text="누출확인" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_vacuum"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="button 2" />
+        android:text="진공배기" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_close"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="닫기" />
 
 </LinearLayout>

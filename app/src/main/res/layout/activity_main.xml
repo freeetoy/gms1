@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:text="전체삭제"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_vacuum"
+        app:layout_constraintEnd_toStartOf="@+id/btn_history"
         app:layout_constraintStart_toEndOf="@+id/btn_manual" />
 
     <Button
@@ -96,13 +96,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_hole"
+        android:id="@+id/btn_etc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="누공확인"
+        android:text="기타"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_vacuum" />
+        app:layout_constraintStart_toEndOf="@+id/btn_history" />
 
     <Button
         android:id="@+id/btn_rental"
@@ -123,7 +123,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_etc"
+        android:id="@+id/btn_chargedt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="충전기한확인"
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:text="회수"
         app:layout_constraintBottom_toTopOf="@+id/btn_deleteAll"
-        app:layout_constraintEnd_toStartOf="@+id/btn_etc"
+        app:layout_constraintEnd_toStartOf="@+id/btn_chargedt"
         app:layout_constraintStart_toEndOf="@+id/btn_rental" />
 
     <Button
@@ -146,7 +146,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="충전"
-        app:layout_constraintBottom_toTopOf="@+id/btn_etc"
+        app:layout_constraintBottom_toTopOf="@+id/btn_chargedt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_incar" />
 
@@ -178,12 +178,12 @@
         app:layout_constraintStart_toEndOf="@+id/btn_come" />
 
     <Button
-        android:id="@+id/btn_vacuum"
+        android:id="@+id/btn_history"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="진공배기"
+        android:text="이전작업내역"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_hole"
+        app:layout_constraintEnd_toStartOf="@+id/btn_etc"
         app:layout_constraintStart_toEndOf="@+id/btn_deleteAll" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

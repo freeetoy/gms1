@@ -171,6 +171,11 @@ public class CustomDialog {
                         Toast.makeText(context, String.format("\"%s=%s=%s\" 을 입력하였습니다.", message.getText().toString(), bottleType, buttonType), Toast.LENGTH_SHORT).show();
 
                         customerId = message.getText().toString();
+                        //작업한 용기목록저장
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                        editor.putString("previousBottles",bottles);
+                        editor.commit();
 
                         // 서버 전송
                         new HttpAsyncTask1().execute(host + "api/controlAction.do?userId=" + userId + "&bottles=" + bottles + "&customerNm=" + customerId + "&bottleType=" + bottleType + "&bottleWorkCd=" + buttonType);
