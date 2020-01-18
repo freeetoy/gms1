@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ExampleBottomSheetDialog.BottomSheetListener{
+public class MainActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener{
 
     private Button btn_logout,btn_come, btn_out, btn_incar, btn_charge, btn_sales, btn_rental, btn_back, btn_etc, btn_scan, btn_deleteAll,btn_vacuum, btn_hole, btn_manual;
 
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements ExampleBottomShee
                     }
                     Toast.makeText(MainActivity.this, tempStr, Toast.LENGTH_SHORT).show();
 
-                    ExampleBottomSheetDialog bottomSheet = new ExampleBottomSheetDialog(MainActivity.this,tempStr);
+                    BottomSheetDialog bottomSheet = new BottomSheetDialog(MainActivity.this,tempStr);
                     bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
                     /*/
                     ChargeDialog customDialog = new ChargeDialog(MainActivity.this, btn_hole.getText().toString());
